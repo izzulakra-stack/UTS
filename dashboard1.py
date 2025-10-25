@@ -68,16 +68,15 @@ if uploaded_file is not None:
     # ================================
     # Mode Klasifikasi Hewan
     # ================================
-    if menu == "Klasifikasi Hewan" and classifier is not None:
+   if menu == "Klasifikasi Hewan" and classifier is not None:
     with st.spinner("🔍 Sedang mengklasifikasi..."):
         try:
-            kelas, _, confidence = klasifikasi_hewan(img, classifier)  # tanda _ untuk kandang yang diabaikan
+            kelas, _, confidence = klasifikasi_hewan(img, classifier)
             st.success(f"✅ Gambar ini terdeteksi sebagai **{kelas}**")
             st.progress(float(confidence))
             st.write(f"Tingkat Kepercayaan: {confidence*100:.2f}%")
         except Exception as e:
             st.error(f"Gagal melakukan klasifikasi: {e}")
-
 
     # ================================
     # Mode Deteksi Mobil
