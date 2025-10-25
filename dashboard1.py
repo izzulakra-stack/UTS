@@ -47,19 +47,59 @@ def klasifikasi_hewan(img, model):
     return kelas, lokasi, confidence
 
 # ================================
+# Styling Dashboard
+# ================================
+st.set_page_config(
+    page_title="📷 Aplikasi Deteksi & Klasifikasi",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+st.markdown("""
+    <style>
+    body {
+        background-color: #f0f8ff;
+        color: #1a1a1a;
+    }
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .stSidebar {
+        background-color: #e6f2ff;
+    }
+    .stAlert {
+        background-color: #ffebcc;
+    }
+    .kotak-hewan {
+        background-color: #cce5ff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .kotak-mobil {
+        background-color: #d4edda;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# ================================
 # UI
 # ================================
-st.markdown("<h1 style='text-align:center;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center;'>Pilih Mode: Hewan atau Mobil</h4>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#0b3d91;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align:center; color:#0b3d91;'>Pilih Mode: Hewan atau Mobil</h4>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#0b3d91;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
 st.divider()
 
 menu = st.sidebar.selectbox(
-    "Pilih Mode:",
+    "Pilih Mode 🖥️:",
     ["Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Hewan"]
 )
 
-uploaded_file = st.file_uploader("Unggah Gambar", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
@@ -72,9 +112,13 @@ if uploaded_file is not None:
         with st.spinner("🔍 Sedang mengklasifikasi..."):
             try:
                 kelas, lokasi, confidence = klasifikasi_hewan(img, classifier)
-                st.success(f"✅ Gambar ini terdeteksi sebagai **{kelas}**")
-                st.markdown(f"📍 Ditempatkan di: **{lokasi}**")
-                st.write(f"Tingkat Kepercayaan: {confidence*100:.2f}%")
+                st.markdown(f"""
+                <div class='kotak-hewan'>
+                    <h3>✅ {kelas}</h3>
+                    <p>📍 {lokasi}</p>
+                    <p>📊 Confidence: {confidence*100:.2f}%</p>
+                </div>
+                """, unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Gagal melakukan klasifikasi: {e}")
 
@@ -90,18 +134,11 @@ if uploaded_file is not None:
                 if len(results[0].boxes) > 0:
                     for i, box in enumerate(results[0].boxes):
                         label = results[0].names[int(box.cls[0])]
-                        showroom_mapping = {
-                            "Audi": "Showroom 1",
-                            "Hyundai Creta": "Showroom 2",
-                            "Mahindra Scorpio": "Showroom 3",
-                            "Rolls Royce": "Showroom 4",
-                            "Swift": "Showroom 5",
-                            "Tata Safari": "Showroom 6",
-                            "Toyota Innova": "Showroom 7"
-                        }
-                        showroom = showroom_mapping.get(label, "Showroom Tidak Diketahui")
-                        st.success(f"✅ Mobil terdeteksi: **{label}**")
-                        st.markdown(f"🏢 Ditempatkan di: **{showroom}**")
+                        st.markdown(f"""
+                        <div class='kotak-mobil'>
+                            <h3>✅ Mobil terdeteksi: {label}</h3>
+                        </div>
+                        """, unsafe_allow_html=True)
                 else:
                     st.warning("🚫 Tidak ada mobil terdeteksi.")
 
@@ -110,4 +147,4 @@ if uploaded_file is not None:
                 st.error(f"Gagal deteksi mobil: {e}")
 
 else:
-    st.info("Silakan unggah gambar terlebih dahulu untuk memulai prediksi.")
+    st.info("Silakan unggah gambar terlebih dahulu untuk memulai prediksi. 📂")
