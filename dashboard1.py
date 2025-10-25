@@ -27,24 +27,35 @@ yolo_model, classifier = load_models()
 # ================================
 # Fungsi Klasifikasi Hewan
 # ================================
-def klasifikasi_hewan(img, model):
+# Misal mapping label sesuai model training
+label_mapping = {0: "🐶 Anjing", 1: "🐱 Kucing"}
+
+def klasifikasi_hewan(img, model, label_mapping):
+    # Resize sesuai input model
     input_shape = model.input_shape[1:3]
     img_resized = img.resize(input_shape)
     img_array = image.img_to_array(img_resized)
     img_array = np.expand_dims(img_array, axis=0)
-    img_array = img_array / 255.0
-    prediction = model.predict(img_array)
-    class_index = np.argmax(prediction)
-    confidence = np.max(prediction)
+    img_array = img_array / 255.0  # normalisasi
 
-    if class_index == 0:
-        kelas = "🐶 Anjing"
+    # Prediksi
+    prediction = model.predict(img_array)
+    class_index = np.argmax(prediction)      # index kelas tertinggi
+    confidence = np.max(prediction)          # confidence
+
+    # Ambil label dari mapping
+    kelas = label_mapping.get(class_index, "Unknown")
+    
+    # Jika ingin lokasi tetap berdasarkan kelas:
+    if "Anjing" in kelas:
         lokasi = "Kandang Anjing"
-    else:
-        kelas = "🐱 Kucing"
+    elif "Kucing" in kelas:
         lokasi = "Kandang Kucing"
+    else:
+        lokasi = "Kandang Tidak Diketahui"
 
     return kelas, lokasi, confidence
+
 
 # ================================
 # Styling Dashboard
