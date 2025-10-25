@@ -27,7 +27,10 @@ yolo_model, classifier = load_models()
 # ================================
 # UI
 # ================================
-st.title("🧠 Image Classification & Object Detection App")
+st.markdown("<h1 style='text-align: center;'>🐐 SmartVision</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Deteksi Objek dan Klasifikasi Gambar Otomatis</h3>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Dibuat oleh: <b>Izzul Akrami</b> | UTS Big Data 2025</p>", unsafe_allow_html=True)
+
 
 menu = st.sidebar.selectbox(
     "Pilih Mode:",
