@@ -120,11 +120,13 @@ if uploaded_file is not None:
                 result_img = results[0].plot()
 
                 if len(results[0].boxes) > 0:
-                    for i, box in enumerate(results[0].boxes):
+                   for i, box in enumerate(results[0].boxes):
                         label = results[0].names[int(box.cls[0])]
+                        if label != "car":
+                        continue  # skip yang bukan car
                         st.markdown(f"""
                         <div class='kotak-mobil'>
-                            <h3>✅ Mobil terdeteksi: {label}</h3>
+                        <h3>✅ Mobil terdeteksi: {label}</h3>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
