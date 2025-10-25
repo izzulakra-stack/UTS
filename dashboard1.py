@@ -74,7 +74,7 @@ if uploaded_file is not None:
                 kelas, kandang, confidence = klasifikasi_hewan(img, classifier)
                 st.success(f"✅ Gambar ini terdeteksi sebagai **{kelas}**")
                 st.markdown(f"📦 Ditempatkan di: **{kandang}**")
-                st.progress(confidence)
+                st.progress(float(confidence))
                 st.write(f"Tingkat Kepercayaan: {confidence*100:.2f}%")
             except Exception as e:
                 st.error(f"Gagal melakukan klasifikasi: {e}")
