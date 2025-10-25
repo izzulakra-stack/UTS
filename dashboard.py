@@ -1,55 +1,65 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from PIL import Image
+import subprocess
 
-# Coba import YOLO hanya jika ultralytics tersedia
+# ================================
+# Instalasi otomatis YOLO (ultralytics)
+# ================================
 try:
     from ultralytics import YOLO
     import cv2
     YOLO_AVAILABLE = True
-except Exception as e:
-    st.warning(f"⚠️ YOLO tidak bisa diimpor: {e}")
-    YOLO_AVAILABLE = False
+except ModuleNotFoundError:
+    with st.spinner("📦 Menginstal library 'ultralytics'... (tunggu sebentar)"):
+        subprocess.run(["pip", "install", "ultralytics==8.1.0"], check=True)
+    try:
+        from ultralytics import YOLO
+        import cv2
+        YOLO_AVAILABLE = True
+    except Exception as e:
+        st.warning(f"⚠️ YOLO gagal diinstal: {e}")
+        YOLO_AVAILABLE = False
 
-# ==========================
+# ================================
 # Load Models
-# ==========================
+# ================================
 @st.cache_resource
 def load_models():
     yolo_model, classifier = None, None
     try:
         if YOLO_AVAILABLE:
-            yolo_model = YOLO("Model/Izzul Akrami_Laporan4.pt")
-        classifier = tf.keras.models.load_model("Model/my_model.h5")
+            yolo_model = YOLO("Model/Izzul Akrami_Laporan4.pt")  # model YOLO
+        classifier = tf.keras.models.load_model("Model/my_model.h5")  # model klasifikasi
     except Exception as e:
         st.error(f"Gagal memuat model: {e}")
     return yolo_model, classifier
 
 yolo_model, classifier = load_models()
 
-# ==========================
+# ================================
 # UI
-# ==========================
+# ================================
 st.title("🧠 Image Classification & Object Detection App")
 
 menu = st.sidebar.selectbox(
     "Pilih Mode:",
-    ["Deteksi Objek (YOLO)" if YOLO_AVAILABLE else "Klasifikasi Gambar", "Klasifikasi Gambar"]
+    ["Klasifikasi Gambar", "Deteksi Objek (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Gambar"]
 )
 
 uploaded_file = st.file_uploader("Unggah Gambar", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
-    st.image(img, caption="Gambar yang Diupload", use_container_width=True)
+    st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
 
     if menu == "Deteksi Objek (YOLO)" and YOLO_AVAILABLE and yolo_model is not None:
         with st.spinner("🔍 Sedang mendeteksi objek..."):
             results = yolo_model(img)
             result_img = results[0].plot()
-            st.image(result_img, caption="Hasil Deteksi", use_container_width=True)
+            st.image(result_img, caption="🧾 Hasil Deteksi", use_container_width=True)
 
     elif menu == "Klasifikasi Gambar" and classifier is not None:
         with st.spinner("🧩 Sedang mengklasifikasi..."):
@@ -66,6 +76,6 @@ if uploaded_file is not None:
             st.write("**Kelas (Index):**", class_index)
             st.write("**Tingkat Kepercayaan:**", f"{confidence*100:.2f}%")
     else:
-        st.warning("⚠️ Model belum dimuat dengan benar.")
+        st.warning("⚠️ Model belum dimuat atau mode tidak tersedia.")
 else:
-    st.info("Silakan unggah gambar untuk memulai.")
+    st.info("Silakan unggah gambar terlebih dahulu untuk memulai prediksi.")
