@@ -35,7 +35,7 @@ st.divider()
 
 menu = st.sidebar.selectbox(
     "Pilih Mode:",
-    ["Klasifikasi Gambar", "Deteksi Objek (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Gambar"]
+    ["Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Gambar"]
 )
 
 uploaded_file = st.file_uploader("Unggah Gambar", type=["jpg", "jpeg", "png"])
