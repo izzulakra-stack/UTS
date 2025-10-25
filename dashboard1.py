@@ -95,18 +95,21 @@ if menu == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    # Gambar ilustrasi di tengah
-    st.header("Contoh Gambar")
-    col1, col2, col3 = st.columns(3)
+   # Gambar ilustrasi di tengah
+st.header("Contoh Gambar")
+col1, col2, col3 = st.columns(3)
 
-    with col1:
-        st.image("https://images.unsplash.com/photo-1601758123927-196a6aa2205c", caption="Anjing", use_column_width=True)
+with col1:
+    st.image("https://images.unsplash.com/photo-1601758064223-6f3be8b1b5e3?auto=format&fit=crop&w=500&q=80", 
+             caption="Anjing", use_column_width=True)
 
-    with col2:
-        st.image("https://images.unsplash.com/photo-1518791841217-8f162f1e1131", caption="Kucing", use_column_width=True)
+with col2:
+    st.image("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=500&q=80", 
+             caption="Kucing", use_column_width=True)
 
-    with col3:
-        st.image("https://images.unsplash.com/photo-1502877338535-766e1452684a", caption="Mobil", use_column_width=True)
+with col3:
+    st.image("https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=500&q=80", 
+             caption="Mobil", use_column_width=True)
 
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
