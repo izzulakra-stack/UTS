@@ -96,13 +96,17 @@ if menu == "🏠 Home":
     """, unsafe_allow_html=True)
 
     # Gambar ilustrasi di tengah
+    st.header("Contoh Gambar")
     col1, col2, col3 = st.columns(3)
+
     with col1:
-        st.image("https://cdn-icons-png.flaticon.com/512/616/616408.png", caption="Kucing 🐱", use_container_width=True)
+        st.image("https://images.unsplash.com/photo-1601758123927-196a6aa2205c", caption="Anjing", use_column_width=True)
+
     with col2:
-        st.image("https://cdn-icons-png.flaticon.com/512/616/6164082.png", caption="Anjing 🐶", use_container_width=True)
+        st.image("https://images.unsplash.com/photo-1518791841217-8f162f1e1131", caption="Kucing", use_column_width=True)
+
     with col3:
-        st.image("https://cdn-icons-png.flaticon.com/512/743/743007.png", caption="Mobil 🚗", use_container_width=True)
+        st.image("https://images.unsplash.com/photo-1502877338535-766e1452684a", caption="Mobil", use_column_width=True)
 
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
