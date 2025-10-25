@@ -28,7 +28,7 @@ yolo_model, classifier = load_models()
 # Fungsi Klasifikasi Hewan
 # ================================
 # Misal mapping label sesuai model training
-label_mapping = {1: "🐶 Anjing", 0: "🐱 Kucing"}
+label_mapping = {0: "🐱 Cat", 1: "🐶 Dog"}
 
 def klasifikasi_hewan(img, model, label_mapping):
     # 1. Resize sesuai input model
