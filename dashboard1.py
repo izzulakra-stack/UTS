@@ -14,12 +14,9 @@ YOLO_AVAILABLE = True
 def load_models():
     yolo_model, classifier, label_mapping = None, None, {}
     try:
-        # YOLO untuk mobil
         if YOLO_AVAILABLE:
             yolo_model = YOLO("Model/deteksi.pt")
-        # Klasifikasi hewan
         classifier = tf.keras.models.load_model("Model/klasifikasi.h5")
-        # Mapping label: sesuai urutan saat training
         label_mapping = {0: "Cat", 1: "Dog"}
     except Exception as e:
         st.error(f"Gagal memuat model: {e}")
@@ -37,18 +34,13 @@ def klasifikasi_hewan(img, model, label_mapping):
     img_array = np.expand_dims(img_array, axis=0)
 
     prediction = model.predict(img_array)
-
     if prediction.shape[1] == 1:
-        # Binary sigmoid
         class_index = int(prediction[0][0] > 0.5)
     else:
-        # Multi-class softmax
         class_index = np.argmax(prediction[0])
 
     confidence = np.max(prediction)
     kelas = label_mapping.get(class_index, "Unknown")
-
-    # Lokasi
     lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
     lokasi = lokasi_mapping.get(kelas, "Kandang Tidak Diketahui")
 
@@ -78,25 +70,40 @@ st.markdown("""
 # UI
 # ================================
 st.markdown("<h1 style='text-align:center; color:#0b3d91;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center; color:#0b3d91;'>Pilih Mode: Hewan atau Mobil</h4>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#0b3d91;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
 st.divider()
 
+# Sidebar Menu
 menu = st.sidebar.selectbox(
-    "Pilih Mode 🖥️:",
-    ["Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Hewan"]
+    "Pilih Halaman 🖥️:",
+    ["🏠 Home", "Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["🏠 Home", "Klasifikasi Hewan"]
 )
 
-uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
+# ================================
+# HALAMAN HOME
+# ================================
+if menu == "🏠 Home":
+    st.markdown("""
+    <div style='text-align:center;'>
+        <h2>Selamat Datang di Aplikasi Deteksi & Klasifikasi Gambar</h2>
+        <p>Aplikasi ini dapat mengenali dua jenis objek:</p>
+        <ul style='text-align:left; display:inline-block;'>
+            <li>🐱 <b>Klasifikasi Hewan:</b> Membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
+            <li>🚗 <b>Deteksi Mobil (YOLO):</b> Mendeteksi keberadaan mobil dalam gambar.</li>
+        </ul>
+        <p>Gunakan menu di sebelah kiri untuk memilih mode yang diinginkan.<br>
+        Pastikan Anda mengunggah gambar dengan format <b>JPG</b>, <b>JPEG</b>, atau <b>PNG</b>.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-if uploaded_file is not None:
-    img = Image.open(uploaded_file)
-    st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
-
-    # ================================
-    # Mode Klasifikasi Hewan
-    # ================================
-    if menu == "Klasifikasi Hewan" and classifier is not None:
+# ================================
+# HALAMAN KLASIFIKASI HEWAN
+# ================================
+elif menu == "Klasifikasi Hewan" and classifier is not None:
+    uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
         with st.spinner("🔍 Sedang mengklasifikasi..."):
             try:
                 kelas, lokasi, confidence = klasifikasi_hewan(img, classifier, label_mapping)
@@ -109,24 +116,33 @@ if uploaded_file is not None:
                 """, unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Gagal melakukan klasifikasi: {e}")
+    else:
+        st.info("Silakan unggah gambar terlebih dahulu untuk memulai klasifikasi. 📂")
 
-    # ================================
-    # Mode Deteksi Mobil
-    # ================================
-    elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not None:
+# ================================
+# HALAMAN DETEKSI MOBIL (YOLO)
+# ================================
+elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not None:
+    uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
         with st.spinner("🚗 Sedang mendeteksi mobil..."):
             try:
                 results = yolo_model(img)
                 result_img = results[0].plot()
 
-                if len(results[0].boxes) > 0:
-                   for i, box in enumerate(results[0].boxes):
-                        label = results[0].names[int(box.cls[0])]
-                        if label != "car":
-                        continue  # skip yang bukan car
+                detected_labels = set()
+                for box in results[0].boxes:
+                    label = results[0].names[int(box.cls[0])]
+                    if label == "car":
+                        detected_labels.add(label)
+
+                if detected_labels:
+                    for label in detected_labels:
                         st.markdown(f"""
                         <div class='kotak-mobil'>
-                        <h3>✅ Mobil terdeteksi: {label}</h3>
+                            <h3>✅ Mobil terdeteksi: {label}</h3>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
@@ -135,6 +151,5 @@ if uploaded_file is not None:
                 st.image(result_img, caption="🧾 Hasil Deteksi Mobil", use_container_width=True)
             except Exception as e:
                 st.error(f"Gagal deteksi mobil: {e}")
-
-else:
-    st.info("Silakan unggah gambar terlebih dahulu untuk memulai prediksi. 📂")
+    else:
+        st.info("Silakan unggah gambar terlebih dahulu untuk memulai deteksi. 📂")
