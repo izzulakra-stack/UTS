@@ -3,3 +3,4 @@ tensorflow
 Pillow
 numpy
 opencv-python-headless
+ultralytics
