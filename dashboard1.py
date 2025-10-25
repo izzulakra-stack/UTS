@@ -31,39 +31,26 @@ yolo_model, classifier = load_models()
 label_mapping = {0: "🐱 Cat", 1: "🐶 Dog"}
 
 def klasifikasi_hewan(img, model, label_mapping):
-    # 1. Resize sesuai input model
     input_shape = model.input_shape[1:3]
     img_resized = img.resize(input_shape)
-    img_array = np.array(img_resized) / 255.0  # pastikan preprocessing sama seperti saat training
+    img_array = np.array(img_resized) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    # 2. Prediksi
     prediction = model.predict(img_array)
 
-    # 3. Sesuaikan dengan jenis output model
     if prediction.shape[1] == 1:
-        # Binary classification (sigmoid)
         class_index = int(prediction[0][0] > 0.5)
     else:
-        # Multi-class classification (softmax)
         class_index = np.argmax(prediction[0])
 
     confidence = np.max(prediction)
-
-    # 4. Ambil label dari mapping
     kelas = label_mapping.get(class_index, "Unknown")
 
-    # 5. Tentukan lokasi
-    if "Anjing" in kelas:
-        lokasi = "Kandang Anjing"
-    elif "Kucing" in kelas:
-        lokasi = "Kandang Kucing"
-    else:
-        lokasi = "Kandang Tidak Diketahui"
+    # Lokasi sesuai label
+    lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
+    lokasi = lokasi_mapping.get(kelas.split()[-1], "Kandang Tidak Diketahui")
 
     return kelas, lokasi, confidence
-
-
 # ================================
 # Styling Dashboard
 # ================================
