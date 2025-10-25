@@ -4,24 +4,9 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from PIL import Image
 import subprocess
-
-# ================================
-# Instalasi otomatis YOLO (ultralytics)
-# ================================
-try:
-    from ultralytics import YOLO
-    import cv2
-    YOLO_AVAILABLE = True
-except ModuleNotFoundError:
-    with st.spinner("📦 Menginstal library 'ultralytics'... (tunggu sebentar)"):
-        try:
-            subprocess.run(["pip", "install", "ultralytics==8.1.0"], check=True)
-            from ultralytics import YOLO
-            import cv2
-            YOLO_AVAILABLE = True
-        except Exception as e:
-            st.warning(f"⚠️ YOLO gagal diinstal: {e}")
-            YOLO_AVAILABLE = False
+from ultralytics import YOLO
+import cv2
+YOLO_AVAILABLE = True
 
 # ================================
 # Load Models
