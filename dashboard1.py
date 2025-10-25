@@ -27,9 +27,10 @@ yolo_model, classifier = load_models()
 # ================================
 # UI
 # ================================
-st.markdown("<h1 style='text-align: center;'>🐐 SmartVision</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center;'>Deteksi Objek dan Klasifikasi Gambar Otomatis</h3>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Dibuat oleh: <b>Izzul Akrami</b> | UTS Big Data 2025</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;'>📷 Aplikasi Deteksi & Klasifikasi Gambar</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align:center;'>Deteksi 7 Merek Mobil dan Klasifikasi Gambar Kucing & Anjing</h4>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Dikembangkan oleh: <b>Izzul Akrami</b> | UTS Big Data 2025</p>", unsafe_allow_html=True)
+st.divider()
 
 
 menu = st.sidebar.selectbox(
