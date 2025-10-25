@@ -4,7 +4,6 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from PIL import Image
 from ultralytics import YOLO
-import cv2
 
 YOLO_AVAILABLE = True
 
@@ -13,23 +12,24 @@ YOLO_AVAILABLE = True
 # ================================
 @st.cache_resource
 def load_models():
-    yolo_model, classifier = None, None
+    yolo_model, classifier, label_mapping = None, None, {}
     try:
+        # YOLO untuk mobil
         if YOLO_AVAILABLE:
             yolo_model = YOLO("Model/deteksi.pt")
+        # Klasifikasi hewan
         classifier = tf.keras.models.load_model("Model/klasifikasi.h5")
+        # Mapping label: sesuai urutan saat training
+        label_mapping = {0: "Cat", 1: "Dog"}
     except Exception as e:
         st.error(f"Gagal memuat model: {e}")
-    return yolo_model, classifier
+    return yolo_model, classifier, label_mapping
 
-yolo_model, classifier = load_models()
+yolo_model, classifier, label_mapping = load_models()
 
 # ================================
 # Fungsi Klasifikasi Hewan
 # ================================
-# Misal mapping label sesuai model training
-label_mapping = {0: "🐱 Cat", 1: "🐶 Dog"}
-
 def klasifikasi_hewan(img, model, label_mapping):
     input_shape = model.input_shape[1:3]
     img_resized = img.resize(input_shape)
@@ -39,18 +39,21 @@ def klasifikasi_hewan(img, model, label_mapping):
     prediction = model.predict(img_array)
 
     if prediction.shape[1] == 1:
+        # Binary sigmoid
         class_index = int(prediction[0][0] > 0.5)
     else:
+        # Multi-class softmax
         class_index = np.argmax(prediction[0])
 
     confidence = np.max(prediction)
     kelas = label_mapping.get(class_index, "Unknown")
 
-    # Lokasi sesuai label
+    # Lokasi
     lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
-    lokasi = lokasi_mapping.get(kelas.split()[-1], "Kandang Tidak Diketahui")
+    lokasi = lokasi_mapping.get(kelas, "Kandang Tidak Diketahui")
 
     return kelas, lokasi, confidence
+
 # ================================
 # Styling Dashboard
 # ================================
@@ -62,32 +65,12 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    body {
-        background-color: #f0f8ff;
-        color: #1a1a1a;
-    }
-    .stButton>button {
-        background-color: #4CAF50;
-        color: white;
-    }
-    .stSidebar {
-        background-color: #e6f2ff;
-    }
-    .stAlert {
-        background-color: #ffebcc;
-    }
-    .kotak-hewan {
-        background-color: #cce5ff;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    .kotak-mobil {
-        background-color: #d4edda;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
+    body {background-color: #f0f8ff; color: #1a1a1a;}
+    .stButton>button {background-color: #4CAF50; color: white;}
+    .stSidebar {background-color: #e6f2ff;}
+    .stAlert {background-color: #ffebcc;}
+    .kotak-hewan {background-color: #cce5ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;}
+    .kotak-mobil {background-color: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 10px;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -116,7 +99,7 @@ if uploaded_file is not None:
     if menu == "Klasifikasi Hewan" and classifier is not None:
         with st.spinner("🔍 Sedang mengklasifikasi..."):
             try:
-                kelas, lokasi, confidence = klasifikasi_hewan(img, classifier)
+                kelas, lokasi, confidence = klasifikasi_hewan(img, classifier, label_mapping)
                 st.markdown(f"""
                 <div class='kotak-hewan'>
                     <h3>✅ {kelas}</h3>
