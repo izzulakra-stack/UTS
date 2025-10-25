@@ -38,9 +38,11 @@ def klasifikasi_hewan(img, model):
     confidence = np.max(prediction)
 
     if class_index == 0:
-        kelas = "🐱 Kucing"
-    else:
         kelas = "🐶 Anjing"
+        lokasi = "Kandang Anjing"
+    else:
+        kelas = "🐱 Kucing"
+        lokasi = "Kandang Kucing"
 
     return kelas, lokasi, confidence
 
