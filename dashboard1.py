@@ -99,7 +99,7 @@ if menu == "🏠 Home":
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.image("https://images.unsplash.com/photo-1601758064223-6f3be8b1b5e3?auto=format&fit=crop&w=500&q=80",
+        st.image("https://www.google.com/imgres?q=gambar%20anjing&imgurl=https%3A%2F%2Fassets.pikiran-rakyat.com%2Fcrop%2F120x80%3A1080x709%2F720x0%2Fwebp%2Fphoto%2F2024%2F11%2F10%2F913948209.png&imgrefurl=https%3A%2F%2Fmalanghits.pikiran-rakyat.com%2Fanimal%2Fpr-3488763679%2Fmengenal-10-jenis-anjing-lucu-yang-populer-dan-menggemaskan%3Fpage%3Dall&docid=kYWvpOucveNpXM&tbnid=5QPX29VEhq9gMM&vet=12ahUKEwj1iNzbxL-QAxXb1zgGHX-MBiEQM3oECB4QAA..i&w=720&h=472&hcb=2&ved=2ahUKEwj1iNzbxL-QAxXb1zgGHX-MBiEQM3oECB4QAA",
                  caption="Anjing", use_column_width=True)
 
     with col2:
