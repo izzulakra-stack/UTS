@@ -38,102 +38,76 @@ def klasifikasi_hewan(img, model):
     confidence = np.max(prediction)
 
     if class_index == 0:
-        kelas = "Anjing"
-        ikon = "🐶"
+        kelas = "🐶 Anjing"
+        lokasi = "Kandang Anjing"
     else:
-        kelas = "Kucing"
-        ikon = "🐱"
+        kelas = "🐱 Kucing"
+        lokasi = "Kandang Kucing"
 
-    return kelas, ikon, confidence
-
-# ================================
-# Fungsi menggambar label di gambar
-# ================================
-def draw_label(img_cv, label, lokasi, bbox=None):
-    color = (0, 255, 0)  # Hijau
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = 0.7
-    thickness = 2
-    text = f"{label} → {lokasi}"
-
-    if bbox is not None:
-        # bbox = [x1, y1, x2, y2]
-        x1, y1, x2, y2 = map(int, bbox)
-        cv2.rectangle(img_cv, (x1, y1), (x2, y2), color, 2)
-        cv2.putText(img_cv, text, (x1, y1-10), font, font_scale, color, thickness, cv2.LINE_AA)
-    else:
-        # untuk hewan, taruh di pojok atas
-        cv2.putText(img_cv, text, (10, 30), font, font_scale, color, thickness, cv2.LINE_AA)
-
-    return img_cv
+    return kelas, lokasi, confidence
 
 # ================================
 # UI
 # ================================
-st.markdown("<h1 style='text-align:center;'>📷 Aplikasi Deteksi & Klasifikasi Interaktif</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center;'>Mobil ke Showroom & Hewan ke Kandang</h4>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Dikembangkan oleh: <b>Izzul Akrami</b> | UTS Big Data 2025</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align:center;'>Pilih Mode: Hewan atau Mobil</h4>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
 st.divider()
+
+menu = st.sidebar.selectbox(
+    "Pilih Mode:",
+    ["Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["Klasifikasi Hewan"]
+)
 
 uploaded_file = st.file_uploader("Unggah Gambar", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    img = Image.open(uploaded_file).convert("RGB")
+    img = Image.open(uploaded_file)
     st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
 
-    img_cv = np.array(img)
-    img_cv = cv2.cvtColor(img_cv, cv2.COLOR_RGB2BGR)
+    # ================================
+    # Mode Klasifikasi Hewan
+    # ================================
+    if menu == "Klasifikasi Hewan" and classifier is not None:
+        with st.spinner("🔍 Sedang mengklasifikasi..."):
+            try:
+                kelas, lokasi, confidence = klasifikasi_hewan(img, classifier)
+                st.success(f"✅ Gambar ini terdeteksi sebagai **{kelas}**")
+                st.markdown(f"📍 Ditempatkan di: **{lokasi}**")
+                st.write(f"Tingkat Kepercayaan: {confidence*100:.2f}%")
+            except Exception as e:
+                st.error(f"Gagal melakukan klasifikasi: {e}")
 
-    hasil_lokasi = []
+    # ================================
+    # Mode Deteksi Mobil
+    # ================================
+    elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not None:
+        with st.spinner("🚗 Sedang mendeteksi mobil..."):
+            try:
+                results = yolo_model(img)
+                result_img = results[0].plot()
 
-    # ---- Klasifikasi Hewan ----
-    if classifier is not None:
-        try:
-            kelas, ikon, confidence = klasifikasi_hewan(img, classifier)
-            if kelas == "Anjing":
-                lokasi = "Kandang Anjing 🐶"
-            else:
-                lokasi = "Kandang Kucing 🐱"
+                if len(results[0].boxes) > 0:
+                    for i, box in enumerate(results[0].boxes):
+                        label = results[0].names[int(box.cls[0])]
+                        showroom_mapping = {
+                            "Audi": "Showroom 1",
+                            "Hyundai Creta": "Showroom 2",
+                            "Mahindra Scorpio": "Showroom 3",
+                            "Rolls Royce": "Showroom 4",
+                            "Swift": "Showroom 5",
+                            "Tata Safari": "Showroom 6",
+                            "Toyota Innova": "Showroom 7"
+                        }
+                        showroom = showroom_mapping.get(label, "Showroom Tidak Diketahui")
+                        st.success(f"✅ Mobil terdeteksi: **{label}**")
+                        st.markdown(f"🏢 Ditempatkan di: **{showroom}**")
+                else:
+                    st.warning("🚫 Tidak ada mobil terdeteksi.")
 
-            hasil_lokasi.append(f"{ikon} {kelas} → {lokasi} (Confidence: {confidence*100:.2f}%)")
-            img_cv = draw_label(img_cv, kelas, lokasi)
-        except Exception as e:
-            st.error(f"Gagal klasifikasi hewan: {e}")
-
-    # ---- Deteksi Mobil YOLO ----
-    if YOLO_AVAILABLE and yolo_model is not None:
-        try:
-            results = yolo_model(img)
-            if len(results[0].boxes) > 0:
-                for i, box in enumerate(results[0].boxes):
-                    x1, y1, x2, y2 = box.xyxy[0].tolist()
-                    label = results[0].names[int(box.cls[0])]
-                    showroom_mapping = {
-                        "Audi": "Showroom 1 🚗",
-                        "Hyundai Creta": "Showroom 2 🚗",
-                        "Mahindra Scorpio": "Showroom 3 🚗",
-                        "Rolls Royce": "Showroom 4 🚗",
-                        "Swift": "Showroom 5 🚗",
-                        "Tata Safari": "Showroom 6 🚗",
-                        "Toyota Innova": "Showroom 7 🚗"
-                    }
-                    lokasi = showroom_mapping.get(label, "Showroom Tidak Diketahui")
-                    hasil_lokasi.append(f"{label} → {lokasi}")
-                    img_cv = draw_label(img_cv, label, lokasi, bbox=[x1, y1, x2, y2])
-            else:
-                st.warning("🚫 Tidak ada mobil terdeteksi.")
-        except Exception as e:
-            st.error(f"Gagal deteksi mobil: {e}")
-
-    # ---- Tampilkan Semua Hasil Lokasi ----
-    if hasil_lokasi:
-        st.markdown("### 📍 Hasil Penempatan Objek:")
-        for item in hasil_lokasi:
-            st.write(f"- {item}")
-
-    # Tampilkan gambar hasil deteksi + label
-    img_cv_rgb = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
-    st.image(img_cv_rgb, caption="🧾 Hasil Deteksi & Penempatan Objek", use_container_width=True)
+                st.image(result_img, caption="🧾 Hasil Deteksi Mobil", use_container_width=True)
+            except Exception as e:
+                st.error(f"Gagal deteksi mobil: {e}")
 
 else:
     st.info("Silakan unggah gambar terlebih dahulu untuk memulai prediksi.")
