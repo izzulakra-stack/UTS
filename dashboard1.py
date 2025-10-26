@@ -67,7 +67,24 @@ st.markdown("""
         border-radius: 10px; 
         margin-bottom: 10px;
     }
+
+    /* === Logo USK pojok kiri bawah === */
+    .logo-usk {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 90px;
+        opacity: 0.9;
+        z-index: 9999;
+    }
     </style>
+""", unsafe_allow_html=True)
+
+# ================================
+# Logo Universitas Syiah Kuala (pojok kiri bawah)
+# ================================
+st.markdown("""
+    <img src="https://upload.wikimedia.org/wikipedia/id/7/76/Lambang_Universitas_Syiah_Kuala.png" class="logo-usk">
 """, unsafe_allow_html=True)
 
 # ================================
@@ -143,14 +160,12 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
             try:
                 results = yolo_model(img, conf=0.5)
                 result_img = results[0].plot()
-
                 detected_objects = []
                 for box in results[0].boxes:
                     label = results[0].names[int(box.cls[0])]
                     conf = float(box.conf[0])
                     if label in ["car", "truck"]:
                         detected_objects.append((label.capitalize(), conf))
-
                 if detected_objects:
                     for obj, conf in detected_objects:
                         st.markdown(f"""
