@@ -23,18 +23,7 @@ def load_models():
     return yolo_model, classifier, label_mapping
 
 yolo_model, classifier, label_mapping = load_models()
-
-# ================================
-# Debug Info untuk Model YOLO
-# ================================
-with st.sidebar.expander("🔍 Debug Model YOLO"):
-    if yolo_model is not None:
-        st.write("Daftar Label dalam Model YOLO:")
-        st.write(yolo_model.names)
-        st.write(f"Total kelas: {len(yolo_model.names)}")
-    else:
-        st.warning("Model YOLO belum dimuat atau tidak tersedia.")
-        
+       
 # ================================
 # Fungsi Klasifikasi Hewan
 # ================================
