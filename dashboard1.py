@@ -51,15 +51,16 @@ if menu == "🐾 Klasifikasi Hewan":
     """
     accent_color = "#22c1c3"
     font_family = "'Orbitron', sans-serif"
+    title_text = "🐾 KLASIFIKASI HEWAN CERDAS (CAT VS DOG)"
 
 elif menu == "🚗 Deteksi Kendaraan (YOLO)":
-    # Versi terang futuristik
     background = """
         background: linear-gradient(135deg, #e3f2fd, #bbdefb, #e0f7fa);
         color: #002b36;
     """
     accent_color = "#00bcd4"
     font_family = "'Audiowide', sans-serif"
+    title_text = "🚗 DETEKSI KENDARAAN FUTURISTIK (CAR & TRUCK)"
 
 else:
     background = """
@@ -68,6 +69,7 @@ else:
     """
     accent_color = "#0077b6"
     font_family = "'Poppins', sans-serif"
+    title_text = "🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR"
 
 # ================================
 # Styling Dinamis
@@ -125,7 +127,7 @@ st.markdown(f"""
 # ================================
 st.markdown(f"""
 <h1 style='text-align:center; color:{accent_color}; font-size: 55px; text-shadow: 0 0 20px {accent_color};'>
-🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR
+{title_text}
 </h1>
 <h3 style='text-align:center;'>Jurusan Statistika — Universitas Syiah Kuala</h3>
 <h4 style='text-align:center;'>NPM: <b>2208108010026</b> | Oleh: <b>Izzul Akrami</b></h4>
