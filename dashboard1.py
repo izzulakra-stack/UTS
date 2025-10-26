@@ -141,34 +141,35 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
     if uploaded_file is not None:
         img = Image.open(uploaded_file)
         st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
-        with st.spinner("🚗 Sedang mendeteksi mobil..."):
+        with st.spinner("🚗 Sedang mendeteksi objek..."):
             try:
                 results = yolo_model(img)
                 result_img = results[0].plot()
 
-                car_detected = False
-                max_conf = 0.0
-
+                detected_objects = []
                 for box in results[0].boxes:
                     label = results[0].names[int(box.cls[0])]
                     conf = float(box.conf[0])
-                    if label == "car" and conf > max_conf:
-                        car_detected = True
-                        max_conf = conf
 
-                if car_detected:
-                    st.markdown(f"""
-                    <div class='kotak-mobil'>
-                        <h3>✅ Mobil terdeteksi!</h3>
-                        <p>🏢 Ditempatkan di: <b>Showroom Mobil</b></p>
-                        <p>📊 Confidence: {max_conf*100:.2f}%</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    if label == "car":
+                        detected_objects.append(("Mobil 🚗", "Showroom Mobil", conf))
+                    elif label == "truck":
+                        detected_objects.append(("Truk 🚛", "Showroom Truk", conf))
+
+                if detected_objects:
+                    for obj, lokasi, conf in detected_objects:
+                        st.markdown(f"""
+                        <div class='kotak-mobil'>
+                            <h3>✅ {obj} terdeteksi!</h3>
+                            <p>🏢 Ditempatkan di: <b>{lokasi}</b></p>
+                            <p>📊 Confidence: {conf*100:.2f}%</p>
+                        </div>
+                        """, unsafe_allow_html=True)
                 else:
-                    st.warning("🚫 Tidak ada mobil terdeteksi.")
+                    st.warning("🚫 Tidak ada mobil atau truk terdeteksi.")
 
-                st.image(result_img, caption="🧾 Hasil Deteksi Mobil", use_container_width=True)
+                st.image(result_img, caption="🧾 Hasil Deteksi", use_container_width=True)
             except Exception as e:
-                st.error(f"Gagal deteksi mobil: {e}")
+                st.error(f"Gagal deteksi objek: {e}")
     else:
         st.info("Silakan unggah gambar terlebih dahulu untuk memulai deteksi. 📂")
