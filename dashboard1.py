@@ -96,20 +96,19 @@ if menu == "🏠 Home":
     """, unsafe_allow_html=True)
 
     st.header("Contoh Gambar")
-    col1, col2, col3 = st.columns(3)
+    img1 = "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg"
+    img2 = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+    img3 = "https://upload.wikimedia.org/wikipedia/commons/9/9d/BMW_4_Series_F32.jpg"
 
-    with col1:
-        st.image(img1)
-        st.caption("Anjing")
+    st.image(img1, use_container_width=True)
+    st.caption("Anjing")
 
-    with col2:
-        st.image(img2)
-        st.caption("Kucing")
+    st.image(img2, use_container_width=True)
+    st.caption("Kucing")
 
-    with col3:
-        st.image(img3)
-        st.caption("Mobil")
-        
+    st.image(img3, use_container_width=True)
+    st.caption("Mobil")
+     
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
 # ================================
