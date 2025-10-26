@@ -147,7 +147,7 @@ st.markdown(f"""
 if menu == "🏠 Home":
     st.markdown(f"""
     <div style='text-align:center;'>
-        <h2>Selamat Datang di Dashboard AI 🚀</h2>
+        <h2>Selamat Datang di Dashboard IZL 🚀</h2>
         <p>Aplikasi ini menggunakan <b>Deep Learning</b> dan <b>YOLO</b> untuk mengenali dua dunia berbeda:</p>
         <ul style='text-align:left; display:inline-block; text-align:justify;'>
             <li>🐾 <b>Klasifikasi Hewan</b> — membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
