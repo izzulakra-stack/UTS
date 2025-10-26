@@ -25,29 +25,7 @@ def load_models():
 yolo_model, classifier, label_mapping = load_models()
 
 # ================================
-# Fungsi Klasifikasi Hewan
-# ================================
-def klasifikasi_hewan(img, model, label_mapping):
-    input_shape = model.input_shape[1:3]
-    img_resized = img.resize(input_shape)
-    img_array = np.array(img_resized) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
-
-    prediction = model.predict(img_array)
-    if prediction.shape[1] == 1:
-        class_index = int(prediction[0][0] > 0.5)
-    else:
-        class_index = np.argmax(prediction[0])
-
-    confidence = np.max(prediction)
-    kelas = label_mapping.get(class_index, "Unknown")
-    lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
-    lokasi = lokasi_mapping.get(kelas, "Kandang Tidak Diketahui")
-
-    return kelas, lokasi, confidence
-
-# ================================
-# Styling Dashboard
+# Styling Dashboard dengan Background Geometris
 # ================================
 st.set_page_config(
     page_title="📷 Aplikasi Deteksi & Klasifikasi",
@@ -57,11 +35,38 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    body {background-color: #f0f8ff; color: #1a1a1a;}
-    .stButton>button {background-color: #4CAF50; color: white;}
-    .stSidebar {background-color: #e6f2ff;}
-    .kotak-hewan {background-color: #cce5ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;}
-    .kotak-mobil {background-color: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 10px;}
+    body {
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/geometric-leaves.png');
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        color: #1a1a1a;
+    }
+    .stApp {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 20px;
+        border-radius: 15px;
+    }
+    .stButton>button {
+        background-color: #4CAF50; 
+        color: white;
+        border-radius: 10px;
+    }
+    .stSidebar {
+        background-color: rgba(230, 242, 255, 0.95);
+    }
+    .kotak-hewan {
+        background-color: #cce5ff; 
+        padding: 15px; 
+        border-radius: 10px; 
+        margin-bottom: 10px;
+    }
+    .kotak-mobil {
+        background-color: #d4edda; 
+        padding: 15px; 
+        border-radius: 10px; 
+        margin-bottom: 10px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -72,7 +77,6 @@ st.markdown("<h1 style='text-align:center; color:#0b3d91;'>📷 Aplikasi Deteksi
 st.markdown("<p style='text-align:center; color:#0b3d91;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
 st.divider()
 
-# Sidebar Menu
 menu = st.sidebar.selectbox(
     "Pilih Halaman 🖥️:",
     ["🏠 Home", "Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["🏠 Home", "Klasifikasi Hewan"]
@@ -105,7 +109,16 @@ elif menu == "Klasifikasi Hewan" and classifier is not None:
         st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
         with st.spinner("🔍 Sedang mengklasifikasi..."):
             try:
-                kelas, lokasi, confidence = klasifikasi_hewan(img, classifier, label_mapping)
+                input_shape = classifier.input_shape[1:3]
+                img_resized = img.resize(input_shape)
+                img_array = np.array(img_resized) / 255.0
+                img_array = np.expand_dims(img_array, axis=0)
+                prediction = classifier.predict(img_array)
+                class_index = int(prediction[0][0] > 0.5)
+                kelas = label_mapping.get(class_index, "Unknown")
+                confidence = float(np.max(prediction))
+                lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
+                lokasi = lokasi_mapping.get(kelas, "Kandang Tidak Diketahui")
                 st.markdown(f"""
                 <div class='kotak-hewan'>
                     <h3>✅ {kelas}</h3>
@@ -135,24 +148,19 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
                 for box in results[0].boxes:
                     label = results[0].names[int(box.cls[0])]
                     conf = float(box.conf[0])
-
-                    if label == "car":
-                        detected_objects.append(("Mobil 🚗", "Showroom Mobil", conf))
-                    elif label == "truck":
-                        detected_objects.append(("Truk 🚛", "Showroom Truk", conf))
+                    if label in ["car", "truck"]:
+                        detected_objects.append((label.capitalize(), conf))
 
                 if detected_objects:
-                    for obj, lokasi, conf in detected_objects:
+                    for obj, conf in detected_objects:
                         st.markdown(f"""
                         <div class='kotak-mobil'>
                             <h3>✅ {obj} terdeteksi!</h3>
-                            <p>🏢 Ditempatkan di: <b>{lokasi}</b></p>
                             <p>📊 Confidence: {conf*100:.2f}%</p>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
                     st.warning("🚫 Tidak ada mobil atau truk terdeteksi.")
-
                 st.image(result_img, caption="🧾 Hasil Deteksi", use_container_width=True)
             except Exception as e:
                 st.error(f"Gagal deteksi objek: {e}")
