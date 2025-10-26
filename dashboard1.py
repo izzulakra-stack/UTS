@@ -44,34 +44,41 @@ st.markdown("""
         color: #0b3d91;
     }
 
-    /* Header Gradient */
+    /* Header utama */
     .main-header {
-        background: linear-gradient(135deg, #90caf9 0%, #e3f2fd 100%);
-        padding: 25px;
+        background: linear-gradient(135deg, #64b5f6 0%, #bbdefb 100%);
+        padding: 35px 25px;
         border-radius: 15px;
         text-align: center;
-        color: #0b3d91;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-bottom: 25px;
+        color: white;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        margin-bottom: 35px;
     }
 
     .main-header h1 {
-        margin-bottom: 0;
-        font-size: 2.2em;
+        margin-bottom: 10px;
+        font-size: 2.8em;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
     .main-header p {
-        font-size: 1.1em;
-        color: #08306b;
+        font-size: 1.2em;
+        margin: 3px 0;
+    }
+
+    .main-header .npm {
+        font-size: 1em;
+        color: #e3f2fd;
         margin-top: 5px;
-        margin-bottom: 0;
     }
 
     .main-header .subtext {
         font-size: 1em;
-        color: #1a237e;
+        color: #e3f2fd;
         font-style: italic;
-        margin-top: 3px;
+        margin-top: 2px;
     }
 
     /* Tombol */
@@ -113,8 +120,9 @@ st.markdown("""
 # ================================
 st.markdown("""
 <div class="main-header">
-    <h1>📷 Aplikasi Deteksi & Klasifikasi</h1>
-    <p>Dikembangkan oleh: <b>Izzul Akrami</b></p>
+    <h1>📷 APLIKASI DETEKSI & KLASIFIKASI GAMBAR</h1>
+    <p><b>Izzul Akrami</b></p>
+    <p class="npm">NPM: 2208108010026</p>
     <p class="subtext">Jurusan Statistika — Universitas Syiah Kuala</p>
 </div>
 """, unsafe_allow_html=True)
