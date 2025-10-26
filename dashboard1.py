@@ -153,12 +153,15 @@ if menu == "🏠 Home":
             <li>🐾 <b>Klasifikasi Hewan</b> — membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
             <li>🚗 <b>Deteksi Kendaraan</b> — mendeteksi mobil dan truk secara otomatis.</li>
         </ul>
-        <p style='font-size:18px; color:{subtitle_color}; margin-top:20px;'>Pilih mode di sidebar untuk memulai!</p>
-        <h1 style='color:{accent_color}; font-size:55px; margin-top:15px; text-shadow: 0 0 20px {accent_color};'>
+        <p style='font-size:18px; color:{accent_color}; margin-top:20px;'>
+            Pilih mode di sidebar untuk memulai!
+        </p>
+        <h1 style='color:{accent_color}; font-size:55px; margin-top:15px; text-shadow: 0 0 20px {accent_color}; font-family:{font_family};'>
             😊 SELAMAT MENGGUNAKAN 😊
         </h1>
     </div>
     """, unsafe_allow_html=True)
+
 
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
