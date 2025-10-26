@@ -28,99 +28,116 @@ yolo_model, classifier, label_mapping = load_models()
 # Page Config
 # ================================
 st.set_page_config(
-    page_title="📷 Aplikasi Deteksi & Klasifikasi",
+    page_title="🤖 Aplikasi Deteksi & Klasifikasi Gambar",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # ================================
-# Styling Dashboard
+# Styling Futuristic
 # ================================
 st.markdown("""
-    <style>
-    /* Warna dasar */
-    .stApp {
-        background-color: #e3f2fd;
-        color: #0b3d91;
-    }
+<style>
+/* Latar belakang utama */
+.stApp {
+    background: radial-gradient(circle at 20% 20%, #0a0f24 0%, #000000 100%);
+    color: #00e5ff;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
 
-    /* Header utama */
-    .main-header {
-        background: linear-gradient(135deg, #64b5f6 0%, #bbdefb 100%);
-        padding: 35px 25px;
-        border-radius: 15px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        margin-bottom: 35px;
-    }
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 0, 0, 0.7));
+    border: 2px solid rgba(0, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 30px 25px;
+    margin-bottom: 35px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+}
 
-    .main-header h1 {
-        margin-bottom: 10px;
-        font-size: 2.8em;
-        font-weight: 800;
-        letter-spacing: 1px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
+.main-header h1 {
+    color: #00ffff;
+    font-size: 2.8em;
+    font-weight: 900;
+    text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
 
-    .main-header p {
-        font-size: 1.2em;
-        margin: 3px 0;
-    }
+.main-header p {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #b2ebf2;
+}
 
-    .main-header .npm {
-        font-size: 1em;
-        color: #e3f2fd;
-        margin-top: 5px;
-    }
+.main-header .npm {
+    color: #80deea;
+    font-size: 1em;
+}
 
-    .main-header .subtext {
-        font-size: 1em;
-        color: #e3f2fd;
-        font-style: italic;
-        margin-top: 2px;
-    }
+.main-header .subtext {
+    font-style: italic;
+    color: #4dd0e1;
+}
 
-    /* Tombol */
-    .stButton>button {
-        background-color: #0b77d6; 
-        color: white;
-        border-radius: 10px;
-        padding: 0.6em 1.2em;
-        border: none;
-    }
-    .stButton>button:hover {
-        background-color: #095cb5;
-    }
+/* Tombol */
+.stButton>button {
+    background-color: #00bcd4;
+    border: none;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+    box-shadow: 0 0 10px #00e5ff;
+    transition: all 0.3s ease;
+}
+.stButton>button:hover {
+    background-color: #00e5ff;
+    color: black;
+    box-shadow: 0 0 20px #00ffff;
+}
 
-    /* Sidebar */
-    .stSidebar {
-        background-color: #bbdefb;
-    }
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: rgba(0, 20, 30, 0.95);
+    border-right: 2px solid #00e5ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
 
-    /* Kotak hasil */
-    .kotak-hewan {
-        background-color: #b3e5fc; 
-        padding: 15px; 
-        border-radius: 12px; 
-        margin-bottom: 10px;
-    }
+/* Kotak hasil */
+.result-box {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #00e5ff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px #00e5ff;
+    margin-top: 15px;
+}
+.result-box h3 {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
 
-    .kotak-mobil {
-        background-color: #c8e6c9; 
-        padding: 15px; 
-        border-radius: 12px; 
-        margin-bottom: 10px;
-    }
-    </style>
+/* Judul subhalaman */
+h2 {
+    color: #00e5ff;
+    text-shadow: 0 0 8px #00e5ff;
+}
+
+/* Link dan highlight */
+a, .highlight {
+    color: #00ffff;
+}
+</style>
 """, unsafe_allow_html=True)
 
 # ================================
-# UI Header
+# Header UI
 # ================================
 st.markdown("""
 <div class="main-header">
-    <h1>📷 APLIKASI DETEKSI & KLASIFIKASI GAMBAR</h1>
+    <h1>🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR</h1>
     <p><b>Izzul Akrami</b></p>
     <p class="npm">NPM: 2208108010026</p>
     <p class="subtext">Jurusan Statistika — Universitas Syiah Kuala</p>
@@ -128,36 +145,35 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 menu = st.sidebar.selectbox(
-    "Pilih Halaman 🖥️:",
+    "🧭 Navigasi Menu",
     ["🏠 Home", "Klasifikasi Hewan", "Deteksi Mobil (YOLO)"] if YOLO_AVAILABLE else ["🏠 Home", "Klasifikasi Hewan"]
 )
 
 # ================================
-# HALAMAN HOME
+# Halaman HOME
 # ================================
 if menu == "🏠 Home":
     st.markdown("""
     <div style='text-align:center;'>
-        <h2>Selamat Datang di Aplikasi Deteksi & Klasifikasi Gambar</h2>
-        <p>Aplikasi ini dapat mengenali dua jenis objek:</p>
-        <ul style='text-align:left; display:inline-block; text-align:justify;'>
-            <li>🐱 <b>Klasifikasi Hewan:</b> Membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
-            <li>🚗 <b>Deteksi Mobil (YOLO):</b> Mendeteksi keberadaan mobil di dalam gambar.</li>
+        <h2>Selamat Datang di Sistem Cerdas Deteksi & Klasifikasi</h2>
+        <p>🧠 Aplikasi ini dirancang untuk mengenali dua jenis objek dengan teknologi kecerdasan buatan:</p>
+        <ul style='text-align:left; display:inline-block;'>
+            <li>🐱 <b>Klasifikasi Hewan:</b> Membedakan antara Kucing dan Anjing.</li>
+            <li>🚗 <b>Deteksi Mobil (YOLO):</b> Mengidentifikasi kendaraan dalam gambar.</li>
         </ul>
-        <p>Gunakan menu di sebelah kiri untuk memilih mode yang diinginkan.<br>
-        Pastikan Anda mengunggah gambar dengan format <b>JPG</b>, <b>JPEG</b>, atau <b>PNG</b>.</p>
+        <p style='color:#80deea;'>Pilih mode analisis di sidebar kiri untuk memulai.</p>
     </div>
     """, unsafe_allow_html=True)
 
 # ================================
-# HALAMAN KLASIFIKASI HEWAN
+# Halaman KLASIFIKASI HEWAN
 # ================================
 elif menu == "Klasifikasi Hewan" and classifier is not None:
     uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         img = Image.open(uploaded_file)
-        st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
-        with st.spinner("🔍 Sedang mengklasifikasi..."):
+        st.image(img, caption="🖼️ Gambar yang diunggah", use_container_width=True)
+        with st.spinner("🤖 Menganalisis data visual..."):
             try:
                 input_shape = classifier.input_shape[1:3]
                 img_resized = img.resize(input_shape)
@@ -167,29 +183,27 @@ elif menu == "Klasifikasi Hewan" and classifier is not None:
                 class_index = int(prediction[0][0] > 0.5)
                 kelas = label_mapping.get(class_index, "Unknown")
                 confidence = float(np.max(prediction))
-                lokasi_mapping = {"Cat": "Kandang Kucing", "Dog": "Kandang Anjing"}
-                lokasi = lokasi_mapping.get(kelas, "Kandang Tidak Diketahui")
+
                 st.markdown(f"""
-                <div class='kotak-hewan'>
-                    <h3>✅ {kelas}</h3>
-                    <p>📍 {lokasi}</p>
+                <div class="result-box">
+                    <h3>🧩 Kelas Teridentifikasi: {kelas}</h3>
                     <p>📊 Confidence: {confidence*100:.2f}%</p>
                 </div>
                 """, unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Gagal melakukan klasifikasi: {e}")
     else:
-        st.info("Silakan unggah gambar terlebih dahulu untuk memulai klasifikasi. 📂")
+        st.info("Unggah gambar untuk memulai klasifikasi futuristik 🚀")
 
 # ================================
-# HALAMAN DETEKSI MOBIL (YOLO)
+# Halaman DETEKSI MOBIL (YOLO)
 # ================================
 elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not None:
     uploaded_file = st.file_uploader("Unggah Gambar 📤", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         img = Image.open(uploaded_file)
-        st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
-        with st.spinner("🚗 Sedang mendeteksi objek..."):
+        st.image(img, caption="🖼️ Gambar yang diunggah", use_container_width=True)
+        with st.spinner("🚗 Memindai objek dengan YOLO..."):
             try:
                 results = yolo_model(img, conf=0.5)
                 result_img = results[0].plot()
@@ -204,15 +218,15 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
                 if detected_objects:
                     for obj, conf in detected_objects:
                         st.markdown(f"""
-                        <div class='kotak-mobil'>
+                        <div class="result-box">
                             <h3>✅ {obj} terdeteksi!</h3>
                             <p>📊 Confidence: {conf*100:.2f}%</p>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
-                    st.warning("🚫 Tidak ada mobil atau truk terdeteksi.")
-                st.image(result_img, caption="🧾 Hasil Deteksi", use_container_width=True)
+                    st.warning("🚫 Tidak ada kendaraan terdeteksi.")
+                st.image(result_img, caption="🔍 Hasil Deteksi", use_container_width=True)
             except Exception as e:
-                st.error(f"Gagal deteksi objek: {e}")
+                st.error(f"Gagal mendeteksi objek: {e}")
     else:
-        st.info("Silakan unggah gambar terlebih dahulu untuk memulai deteksi. 📂")
+        st.info("Unggah gambar untuk memulai deteksi kendaraan futuristik 🚘")
