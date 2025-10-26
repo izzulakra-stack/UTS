@@ -143,7 +143,7 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
         st.image(img, caption="📸 Gambar yang Diupload", use_container_width=True)
         with st.spinner("🚗 Sedang mendeteksi objek..."):
             try:
-                results = yolo_model(img)
+                results = yolo_model(img, conf=0.5)
                 result_img = results[0].plot()
 
                 detected_objects = []
