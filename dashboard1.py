@@ -25,7 +25,7 @@ def load_models():
 yolo_model, classifier, label_mapping = load_models()
 
 # ================================
-# Styling Dashboard dengan Background Geometris
+# Page Config
 # ================================
 st.set_page_config(
     page_title="📷 Aplikasi Deteksi & Klasifikasi",
@@ -33,6 +33,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ================================
+# Background dan Logo USK (pojok kiri bawah)
+# ================================
 st.markdown("""
     <style>
     body {
@@ -43,7 +46,7 @@ st.markdown("""
         color: #1a1a1a;
     }
     .stApp {
-        background-color: rgba(255, 255, 255, 0.85);
+        background-color: rgba(255, 255, 255, 0.88);
         padding: 20px;
         border-radius: 15px;
     }
@@ -67,24 +70,21 @@ st.markdown("""
         border-radius: 10px; 
         margin-bottom: 10px;
     }
-
-    /* === Logo USK pojok kiri bawah === */
-    .logo-usk {
+    /* Logo USK di pojok kiri bawah */
+    [data-testid="stAppViewContainer"]::after {
+        content: "";
         position: fixed;
         bottom: 20px;
         left: 20px;
         width: 90px;
+        height: 90px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/id/7/76/Lambang_Universitas_Syiah_Kuala.png');
+        background-size: contain;
+        background-repeat: no-repeat;
         opacity: 0.9;
-        z-index: 9999;
+        z-index: 999;
     }
     </style>
-""", unsafe_allow_html=True)
-
-# ================================
-# Logo Universitas Syiah Kuala (pojok kiri bawah)
-# ================================
-st.markdown("""
-    <img src="https://upload.wikimedia.org/wikipedia/id/7/76/Lambang_Universitas_Syiah_Kuala.png" class="logo-usk">
 """, unsafe_allow_html=True)
 
 # ================================
@@ -160,12 +160,14 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
             try:
                 results = yolo_model(img, conf=0.5)
                 result_img = results[0].plot()
+
                 detected_objects = []
                 for box in results[0].boxes:
                     label = results[0].names[int(box.cls[0])]
                     conf = float(box.conf[0])
                     if label in ["car", "truck"]:
                         detected_objects.append((label.capitalize(), conf))
+
                 if detected_objects:
                     for obj, conf in detected_objects:
                         st.markdown(f"""
