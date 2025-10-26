@@ -25,7 +25,7 @@ def load_models():
 yolo_model, classifier, label_mapping = load_models()
 
 # ================================
-# Styling Dashboard: Tema Biru Malam Elegan
+# Styling Dashboard dengan Background Geometris
 # ================================
 st.set_page_config(
     page_title="📷 Aplikasi Deteksi & Klasifikasi",
@@ -36,74 +36,45 @@ st.set_page_config(
 st.markdown("""
     <style>
     body {
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/geometry2.png');
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/geometric-leaves.png');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
-        background-color: #0a0f24;
-        color: white;
+        color: #1a1a1a;
     }
     .stApp {
-        background-color: rgba(10, 15, 36, 0.90);
-        padding: 25px;
-        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 20px;
+        border-radius: 15px;
     }
     .stButton>button {
-        background: linear-gradient(90deg, #007bff, #00c6ff);
+        background-color: #4CAF50; 
         color: white;
-        border: none;
-        border-radius: 12px;
-        font-weight: bold;
-        padding: 10px 18px;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background: linear-gradient(90deg, #00c6ff, #007bff);
-        transform: scale(1.03);
+        border-radius: 10px;
     }
     .stSidebar {
-        background-color: rgba(15, 25, 55, 0.95);
-        color: white;
-    }
-    h1, h2, h3, p, li {
-        color: white !important;
+        background-color: rgba(230, 242, 255, 0.95);
     }
     .kotak-hewan {
-        background: rgba(0, 123, 255, 0.2);
-        padding: 15px;
-        border-radius: 10px;
+        background-color: #cce5ff; 
+        padding: 15px; 
+        border-radius: 10px; 
         margin-bottom: 10px;
-        border: 1px solid rgba(0, 123, 255, 0.5);
     }
     .kotak-mobil {
-        background: rgba(0, 255, 150, 0.15);
-        padding: 15px;
-        border-radius: 10px;
+        background-color: #d4edda; 
+        padding: 15px; 
+        border-radius: 10px; 
         margin-bottom: 10px;
-        border: 1px solid rgba(0, 255, 150, 0.4);
-    }
-    /* Logo USK pojok kiri atas */
-    .logo-usk {
-        position: fixed;
-        top: 15px;
-        left: 20px;
-        width: 90px;
-        z-index: 9999;
-        border-radius: 10px;
     }
     </style>
-""", unsafe_allow_html=True)
-
-# Tambahkan logo USK (gunakan logo dari situs resmi)
-st.markdown("""
-    <img src="https://upload.wikimedia.org/wikipedia/id/7/76/Lambang_Universitas_Syiah_Kuala.png" class="logo-usk">
 """, unsafe_allow_html=True)
 
 # ================================
 # UI
 # ================================
-st.markdown("<h1 style='text-align:center; color:#00c6ff;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; color:#cce7ff;'>Dikembangkan oleh: <b>Izzul Akrami</b> | Universitas Syiah Kuala</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#0b3d91;'>📷 Aplikasi Deteksi & Klasifikasi</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#0b3d91;'>Dikembangkan oleh: <b>Izzul Akrami</b></p>", unsafe_allow_html=True)
 st.divider()
 
 menu = st.sidebar.selectbox(
@@ -117,13 +88,13 @@ menu = st.sidebar.selectbox(
 if menu == "🏠 Home":
     st.markdown("""
     <div style='text-align:center;'>
-        <h2 style='color:#00c6ff;'>Selamat Datang di Aplikasi Deteksi & Klasifikasi Gambar</h2>
-        <p style='color:#d0e7ff;'>Aplikasi ini dapat mengenali dua jenis objek:</p>
-        <ul style='text-align:left; display:inline-block; text-align:justify; color:#e8f1ff;'>
+        <h2>Selamat Datang di Aplikasi Deteksi & Klasifikasi Gambar</h2>
+        <p>Aplikasi ini dapat mengenali dua jenis objek:</p>
+        <ul style='text-align:left; display:inline-block; text-align:justify;'>
             <li>🐱 <b>Klasifikasi Hewan:</b> Membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
             <li>🚗 <b>Deteksi Mobil (YOLO):</b> Mendeteksi keberadaan mobil di dalam gambar.</li>
         </ul>
-        <p style='color:#b3d4ff;'>Gunakan menu di sebelah kiri untuk memilih mode yang diinginkan.<br>
+        <p>Gunakan menu di sebelah kiri untuk memilih mode yang diinginkan.<br>
         Pastikan Anda mengunggah gambar dengan format <b>JPG</b>, <b>JPEG</b>, atau <b>PNG</b>.</p>
     </div>
     """, unsafe_allow_html=True)
