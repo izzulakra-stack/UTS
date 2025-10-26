@@ -33,62 +33,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ================================
-# Styling + Logo USK
-# ================================
-st.markdown("""
-    <style>
-    body {
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/geometric-leaves.png');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        color: #1a1a1a;
-    }
-    .stApp {
-        background-color: rgba(255, 255, 255, 0.88);
-        padding: 20px;
-        border-radius: 15px;
-        position: relative;
-        overflow: visible !important;
-    }
-    .stButton>button {
-        background-color: #4CAF50; 
-        color: white;
-        border-radius: 10px;
-    }
-    .stSidebar {
-        background-color: rgba(230, 242, 255, 0.95);
-    }
-    .kotak-hewan {
-        background-color: #cce5ff; 
-        padding: 15px; 
-        border-radius: 10px; 
-        margin-bottom: 10px;
-    }
-    .kotak-mobil {
-        background-color: #d4edda; 
-        padding: 15px; 
-        border-radius: 10px; 
-        margin-bottom: 10px;
-    }
-    /* ✅ Logo USK di pojok kiri bawah */
-    body::after {
-        content: "";
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        width: 90px;
-        height: 90px;
-        background-image: url('https://upload.wikimedia.org/wikipedia/id/7/76/Lambang_Universitas_Syiah_Kuala.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        opacity: 0.9;
-        z-index: 9999;
-        pointer-events: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # ================================
 # UI Header
