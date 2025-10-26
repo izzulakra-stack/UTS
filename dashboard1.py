@@ -96,19 +96,22 @@ if menu == "🏠 Home":
     """, unsafe_allow_html=True)
 
     st.header("Contoh Gambar")
-    img1 = "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg"
-    img2 = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
-    img3 = "https://upload.wikimedia.org/wikipedia/commons/9/9d/BMW_4_Series_F32.jpg"
+    col1, col2 = st.columns(2)
 
-    st.image(img1, use_container_width=True)
-    st.caption("Anjing")
-
-    st.image(img2, use_container_width=True)
+# === Gambar 1: Hewan ===
+with col1:
+    st.subheader("Hewan")
+    img_hewan = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"  # contoh kucing
+    st.image(img_hewan, use_container_width=True)
     st.caption("Kucing")
 
-    st.image(img3, use_container_width=True)
+# === Gambar 2: Kendaraan ===
+with col2:
+    st.subheader("Kendaraan")
+    img_kendaraan = "https://upload.wikimedia.org/wikipedia/commons/9/9d/BMW_4_Series_F32.jpg"  # contoh mobil
+    st.image(img_kendaraan, use_container_width=True)
     st.caption("Mobil")
-     
+    
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
 # ================================
