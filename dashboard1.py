@@ -146,19 +146,24 @@ elif menu == "Deteksi Mobil (YOLO)" and YOLO_AVAILABLE and yolo_model is not Non
                 results = yolo_model(img)
                 result_img = results[0].plot()
 
-                detected_labels = set()
+                car_detected = False
+                max_conf = 0.0
+
                 for box in results[0].boxes:
                     label = results[0].names[int(box.cls[0])]
-                    if label == "car":
-                        detected_labels.add(label)
+                    conf = float(box.conf[0])
+                    if label == "car" and conf > max_conf:
+                        car_detected = True
+                        max_conf = conf
 
-                if detected_labels:
-                    for label in detected_labels:
-                        st.markdown(f"""
-                        <div class='kotak-mobil'>
-                            <h3>✅ Mobil terdeteksi: {label}</h3>
-                        </div>
-                        """, unsafe_allow_html=True)
+                if car_detected:
+                    st.markdown(f"""
+                    <div class='kotak-mobil'>
+                        <h3>✅ Mobil terdeteksi!</h3>
+                        <p>🏢 Ditempatkan di: <b>Showroom Mobil</b></p>
+                        <p>📊 Confidence: {max_conf*100:.2f}%</p>
+                    </div>
+                    """, unsafe_allow_html=True)
                 else:
                     st.warning("🚫 Tidak ada mobil terdeteksi.")
 
