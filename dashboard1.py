@@ -46,67 +46,60 @@ menu = st.sidebar.selectbox(
 # ================================
 if menu == "🐾 Klasifikasi Hewan":
     background = """
-        background: linear-gradient(120deg, #c4f5d2, #aee8ff);
-        color: #002b36;
+        background: radial-gradient(circle at top left, #d4fc79, #96e6a1, #c9ffe5);
+        color: #0b132b;
     """
-    accent_color = "#2ecc71"
-    glow_color = "#00cc99"
-    font_family = "'Poppins', sans-serif"
+    accent_color = "#22c1c3"
+    font_family = "'Orbitron', sans-serif"
 
 elif menu == "🚗 Deteksi Kendaraan (YOLO)":
+    # Versi terang futuristik
     background = """
-        background: linear-gradient(135deg, #00111a, #002b4f, #004d99);
-        color: #e0f7fa;
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb, #e0f7fa);
+        color: #002b36;
     """
-    accent_color = "#00ffff"
-    glow_color = "#33ccff"
-    font_family = "'Orbitron', sans-serif"
+    accent_color = "#00bcd4"
+    font_family = "'Audiowide', sans-serif"
 
 else:
     background = """
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+        background: linear-gradient(135deg, #c9e7ff, #e0f7fa, #ffffff);
         color: #001d3d;
     """
     accent_color = "#0077b6"
-    glow_color = "#66d9ff"
     font_family = "'Poppins', sans-serif"
 
 # ================================
-# Styling Futuristik
+# Styling Dinamis
 # ================================
 st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@400;600&display=swap');
-
     body {{
         {background}
         background-attachment: fixed;
         background-size: cover;
     }}
     .stApp {{
-        background: rgba(255,255,255,0.05);
-        border-radius: 20px;
-        padding: 25px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 25px {glow_color};
+        background: rgba(255,255,255,0.2);
+        border-radius: 15px;
+        padding: 20px;
+        backdrop-filter: blur(15px);
     }}
-    h1 {{
-        text-align: center;
-        font-size: 55px;
-        font-family: {font_family};
+    .stButton>button {{
+        background-color: {accent_color};
+        color: white;
+        border-radius: 10px;
+        border: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }}
+    .stButton>button:hover {{
+        background-color: white;
         color: {accent_color};
-        text-shadow: 0 0 30px {glow_color}, 0 0 50px {accent_color};
-        letter-spacing: 2px;
-        animation: glow 3s ease-in-out infinite alternate;
+        border: 2px solid {accent_color};
     }}
-    @keyframes glow {{
-        from {{ text-shadow: 0 0 10px {glow_color}, 0 0 20px {accent_color}; }}
-        to {{ text-shadow: 0 0 25px {accent_color}, 0 0 45px {glow_color}; }}
-    }}
-    h3, h4, p {{
+    h1, h2, h3, h4, p {{
         font-family: {font_family};
-        color: inherit;
-        text-align: center;
     }}
     .kotak-hewan {{
         background: rgba(173, 216, 230, 0.25);
@@ -117,26 +110,12 @@ st.markdown(f"""
         box-shadow: 0 0 15px {accent_color};
     }}
     .kotak-mobil {{
-        background: rgba(0, 255, 255, 0.15);
+        background: rgba(0, 188, 212, 0.15);
         border-left: 6px solid {accent_color};
         padding: 15px;
         border-radius: 12px;
         margin-top: 10px;
-        box-shadow: 0 0 15px {accent_color};
-    }}
-    .particle {{
-        position: fixed;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: {glow_color};
-        animation: float 6s ease-in-out infinite;
-        opacity: 0.4;
-    }}
-    @keyframes float {{
-        0% {{ transform: translateY(0) scale(1); opacity: 0.3; }}
-        50% {{ transform: translateY(-25px) scale(1.4); opacity: 0.7; }}
-        100% {{ transform: translateY(0) scale(1); opacity: 0.3; }}
+        box-shadow: 0 0 20px {accent_color};
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -145,9 +124,11 @@ st.markdown(f"""
 # HEADER
 # ================================
 st.markdown(f"""
-<h1>🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR</h1>
-<h3>Jurusan Statistika — Universitas Syiah Kuala</h3>
-<h4>NPM: <b>2208108010026</b> | Oleh: <b>Izzul Akrami</b></h4>
+<h1 style='text-align:center; color:{accent_color}; font-size: 55px; text-shadow: 0 0 20px {accent_color};'>
+🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR
+</h1>
+<h3 style='text-align:center;'>Jurusan Statistika — Universitas Syiah Kuala</h3>
+<h4 style='text-align:center;'>NPM: <b>2208108010026</b> | Oleh: <b>Izzul Akrami</b></h4>
 <hr style='border: 1px solid {accent_color};'>
 """, unsafe_allow_html=True)
 
@@ -157,13 +138,13 @@ st.markdown(f"""
 if menu == "🏠 Home":
     st.markdown(f"""
     <div style='text-align:center;'>
-        <h2>Selamat Datang di Dashboard AI Futuristik 🚀</h2>
-        <p>Aplikasi ini menggabungkan dua dunia berbeda:</p>
+        <h2>Selamat Datang di Dashboard Futuristik 🚀</h2>
+        <p>Aplikasi ini memanfaatkan <b>Deep Learning</b> dan <b>YOLO</b> untuk mengenali dua dunia berbeda:</p>
         <ul style='text-align:left; display:inline-block; text-align:justify;'>
-            <li>🐾 <b>Klasifikasi Hewan</b> — mengenali <i>Kucing</i> dan <i>Anjing</i> dengan nuansa alam digital.</li>
-            <li>🚗 <b>Deteksi Kendaraan</b> — mendeteksi mobil & truk dalam gaya cybernetic.</li>
+            <li>🐾 <b>Klasifikasi Hewan</b> — membedakan antara <i>Kucing</i> dan <i>Anjing</i> dengan tema segar alami.</li>
+            <li>🚗 <b>Deteksi Kendaraan</b> — mendeteksi mobil dan truk dengan nuansa terang futuristik dan robotik.</li>
         </ul>
-        <p>Pilih halaman di sidebar untuk mulai eksplorasi AI!</p>
+        <p>Pilih mode di sidebar untuk memulai eksperimen AI!</p>
     </div>
     """, unsafe_allow_html=True)
 
