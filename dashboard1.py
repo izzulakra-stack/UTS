@@ -23,7 +23,7 @@ def load_models():
     return yolo_model, classifier, label_mapping
 
 yolo_model, classifier, label_mapping = load_models()
-       
+
 # ================================
 # Fungsi Klasifikasi Hewan
 # ================================
@@ -98,20 +98,18 @@ if menu == "🏠 Home":
     st.header("Contoh Gambar")
     col1, col2 = st.columns(2)
 
-# === Gambar 1: Hewan ===
-with col1:
-    st.subheader("Hewan")
-    img_hewan = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"  # contoh kucing
-    st.image(img_hewan, use_container_width=True)
-    st.caption("Kucing")
+    with col1:
+        st.subheader("Hewan")
+        img_hewan = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+        st.image(img_hewan, use_container_width=True)
+        st.caption("Kucing")
 
-# === Gambar 2: Kendaraan ===
-with col2:
-    st.subheader("Kendaraan")
-    img_kendaraan = "https://upload.wikimedia.org/wikipedia/commons/9/9d/BMW_4_Series_F32.jpg"  # contoh mobil
-    st.image(img_kendaraan, use_container_width=True)
-    st.caption("Mobil")
-    
+    with col2:
+        st.subheader("Kendaraan")
+        img_kendaraan = "https://upload.wikimedia.org/wikipedia/commons/9/9d/BMW_4_Series_F32.jpg"
+        st.image(img_kendaraan, use_container_width=True)
+        st.caption("Mobil")
+
 # ================================
 # HALAMAN KLASIFIKASI HEWAN
 # ================================
