@@ -126,7 +126,7 @@ st.markdown(f"""
 # HEADER (Judul berbeda tiap halaman)
 # ================================
 if menu == "🏠 Home":
-    title_text = "🤖 APLIKASI DETEKSI & KLASIFIKASI Gambar"
+    title_text = "🤖 APLIKASI DETEKSI & KLASIFIKASI GAMBAR"
 elif menu == "🐾 Klasifikasi Hewan":
     title_text = "🐾 MODE KLASIFIKASI HEWAN"
 elif menu == "🚗 Deteksi Kendaraan (YOLO)":
