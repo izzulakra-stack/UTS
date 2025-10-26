@@ -147,13 +147,16 @@ st.markdown(f"""
 if menu == "🏠 Home":
     st.markdown(f"""
     <div style='text-align:center;'>
-        <h2>Selamat Datang di Dashboard IZL 🚀</h2>
+        <h2>Selamat Datang di Dashboard AI 🚀</h2>
         <p>Aplikasi ini menggunakan <b>Deep Learning</b> dan <b>YOLO</b> untuk mengenali dua dunia berbeda:</p>
         <ul style='text-align:left; display:inline-block; text-align:justify;'>
             <li>🐾 <b>Klasifikasi Hewan</b> — membedakan antara <i>Kucing</i> dan <i>Anjing</i>.</li>
             <li>🚗 <b>Deteksi Kendaraan</b> — mendeteksi mobil dan truk secara otomatis.</li>
         </ul>
-        <p>Pilih mode di sidebar untuk memulai!</p>
+        <p style='font-size:18px; color:{subtitle_color}; margin-top:20px;'>Pilih mode di sidebar untuk memulai!</p>
+        <h1 style='color:{accent_color}; font-size:55px; margin-top:15px; text-shadow: 0 0 20px {accent_color};'>
+            😊 SELAMAT MENGGUNAKAN 😊
+        </h1>
     </div>
     """, unsafe_allow_html=True)
 
